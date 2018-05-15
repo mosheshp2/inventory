@@ -1,1 +1,18 @@
-<p>This is the partial for view 1.</p>
+<div>
+	<h1> Machine inventory </h1>
+
+	<div ui-grid="gridOptions">
+	</div>
+	<input type="button" value="+" ng-click="addLine.show = !addLine.show" />
+	<div ng-show="addLine.show">
+		<input type="text" ng-model="addLine.name" placeholder="Enter name"/>
+		<select ng-model="addLine.type">
+			<option ng-repeat="type in types" value="{{type.type_id}}">{{type.type_name}}</option></select>
+	
+		<select ng-model="addLine.status"><option ng-repeat="status in statuses" value="{{status.id}}">{{status.status_name}}</option></select>
+
+		<input type="text" ng-model="addLine.hardware" placeholder="Enter Hardware"/>
+		
+		<input type="button" value="Add machine" ng-click="addBtnClick()" />
+	</div>	
+</div>
