@@ -29,12 +29,34 @@ app.get('/api/machine', function(req, res){
 });
 
 app.post('/api/machine/:machine_id',function(req, res){
-	// implement save mechnizm
+	// implement save mechanism
+	var machineId = req.params.machine_id;
+	if(!machineId ){
+		res.status(500).send('error, please provide machine_id');
+	}
+	var machines = machinesList.filter(function(item){
+		return item.machine_id == machineId;
+	});
+
+	if(machines && machines.length > 0){
+		// update only existing fields...
+		machines[0].status = req.body.status || machines[0].status;
+		machines[0].hardware_cfg = req.body.hardware_cfg || machines[0].hardware_cfg;
+		machines[0].software_cfg = req.body.software_cfg || machines[0].software_cfg;
+
+		res.send( machines[0]);
+	}
+	else{
+		res.status(500).send('machine not found');
+	}
 });
+
+
 
 app.delete('/api/machine/:machine_id',function(req, res){
 	// implement delete mechnizm
 });
+
 app.get('/api/type', function(req, res){
 	// todo: connect to mysql, query data...
 	res.send([
