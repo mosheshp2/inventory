@@ -1,5 +1,8 @@
 <p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+<div>
+  <p>machine: <input type="text" ng-model="input.machine_id"/></p>
+  <p>body: <textarea multiple="multiple" ng-model="input.text" cols="35" rows="8"></textarea></p>
+  <p>
+    <input type="button" value="{{input.btnText}}" ng-disabled="input.btnDisabled" ng-click="submitPostMachine()" /></p>
+  <div>{{errorText}}</div>
+</div>

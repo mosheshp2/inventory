@@ -1,11 +1,21 @@
 	
 	
 const express = require('express'),
-	  app = express();		
+	  app = express(),
+	  bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/app/index.html'));
 
 app.use(express.static(__dirname + '/app'));
+
+var machinesList = [
+    {machine_id: 0, type_id: 4, machine_name: 'Avi laptop', status: 2, hardware_cfg: '500GB SSD 16 GB DDR4 Intel i7 7600', software_cfg:'some sw'},
+    {machine_id: 1, type_id: 2, machine_name: 'Burg laptop', status: 3, hardware_cfg: '200GB SSD 6 GB DDR3 Intel i3 7200', software_cfg:'some sw'},
+    {machine_id: 2, type_id: 3, machine_name: 'Ave desktop', status: 1, hardware_cfg: '128GB SSD 8 GB DDR3 AMD Xeon 600', software_cfg:'some sw'},
+    {machine_id: 3, type_id: 1, machine_name: 'John tablet', status: 0, hardware_cfg: '64GB SSD 2GB DDR3 ARM x64', software_cfg:'some sw'}
+];
+
 
 
 app.get('/api/machine', function(req, res){
@@ -14,12 +24,7 @@ app.get('/api/machine', function(req, res){
 	var page_size = req.params && req.params.size || 50;
 
 	//query pages with pagination 
-	res.send([
-		{machine_id: 0, type_id: 4, machine_name: 'Avi laptop', status: 2, hardware_cfg: '500GB SSD 16 GB DDR4 Intel i7 7600', software_cfg:'some sw'},
-		{machine_id: 1, type_id: 2, machine_name: 'Burg laptop', status: 3, hardware_cfg: '200GB SSD 6 GB DDR3 Intel i3 7200', software_cfg:'some sw'},
-		{machine_id: 2, type_id: 3, machine_name: 'Ave desktop', status: 1, hardware_cfg: '128GB SSD 8 GB DDR3 AMD Xeon 600', software_cfg:'some sw'},
-		{machine_id: 3, type_id: 1, machine_name: 'John tablet', status: 0, hardware_cfg: '64GB SSD 2GB DDR3 ARM x64', software_cfg:'some sw'}
-	]);
+	res.send(machinesList);
 
 });
 
