@@ -2,8 +2,12 @@
 	
 const express = require('express'),
 	  app = express(),
-	  bodyParser = require('body-parser');
+	  bodyParser = require('body-parser'),
+	  WebSocketServer = require('websocket').server;
+
 app.use(bodyParser.json());
+
+
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/app/index.html'));
 
@@ -43,15 +47,15 @@ app.post('/api/machine/:machine_id',function(req, res){
 		machines[0].status = req.body.status || machines[0].status;
 		machines[0].hardware_cfg = req.body.hardware_cfg || machines[0].hardware_cfg;
 		machines[0].software_cfg = req.body.software_cfg || machines[0].software_cfg;
-
 		res.send( machines[0]);
+
+		pingClients && pingClients();
+
 	}
 	else{
 		res.status(500).send('machine not found');
 	}
 });
-
-
 
 app.delete('/api/machine/:machine_id',function(req, res){
 	// implement delete mechnizm
@@ -77,4 +81,43 @@ app.get('/api/status', function(req, res){
 	]);
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+const server = app.listen(3000, () => console.log('Inventory (web) app listening on port 3000!'));
+
+wsServer = new WebSocketServer({
+    httpServer: server
+});
+
+var connections = [];
+var pingClients = function(){};
+
+// WebSocket server
+wsServer.on('request', function(request) {
+
+    var connection = request.accept(null, request.origin);
+
+    pingClients = function(){
+        if(connections && connections.length > 0){
+        	for(var i in connections) {
+				let conn = connections[i];
+                conn.send('refresh');
+            }
+        }
+    };
+    // This is the most important callback for us, we'll handle
+    // all messages from users here.
+    connection.on('message', function(message) {
+        console.log('message');
+
+        if (message.type === 'utf8') {
+            // process WebSocket message
+        }
+    });
+
+    connection.on('close', function(connection) {
+        console.log('close');
+
+        // close user connection
+    });
+
+    connections.push(connection);
+});

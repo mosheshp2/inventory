@@ -4,6 +4,7 @@
 	<div ui-grid="gridOptions">
 	</div>
 	<input type="button" value="+" ng-click="addLine.show = !addLine.show" />
+	<input type="button" value="refresh" ng-click="loadData()" />
 	<div ng-show="addLine.show">
 		<input type="text" ng-model="addLine.name" placeholder="Enter name"/>
 		<select ng-model="addLine.type">
