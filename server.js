@@ -95,6 +95,8 @@ wsServer.on('request', function(request) {
 
     var connection = request.accept(null, request.origin);
 
+
+    //todo replace with event emtter.
     pingClients = function(){
         if(connections && connections.length > 0){
         	for(var i in connections) {
